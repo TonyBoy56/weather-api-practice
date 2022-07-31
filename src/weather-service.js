@@ -6,7 +6,10 @@ export class WeatherService {
 
       request.addEventListener("loadend", function() {
         const response = JSON.parse(this.responseText);
-        
+        if (this.status === 200) {
+          // this function will soon be written
+          printElements(response, city);
+        }
       })
   }
 }
