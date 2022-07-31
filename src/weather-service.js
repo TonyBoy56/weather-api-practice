@@ -1,19 +1,30 @@
 export class WeatherService {
-  
-  getWeatherByCity() {
-      let request = new XMLHttpRequest();
-      const url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=[YOUR-API-KEY-HERE]`;
+  async getWeatherByCity(city) {
+    // Utilizing 'traditional XMLHttpRequest()'
 
-      request.addEventListener("loadend", function() {
-        const response = JSON.parse(this.responseText);
-        if (this.status === 200) {
-          // this function will soon be written
-          printElements(response, city);
-        }
-      });
+    // let request = new XMLHttpRequest();
+    // const url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=[YOUR-API-KEY-HERE]`;
 
-      // call upon the request object to pass a http req. method of "GET", our api URL, and an async bool of 'true'
-      request.open("GET", url, true);
-      request.send();
+    // request.addEventListener("loadend", function() {
+    //   const response = JSON.parse(this.responseText);
+    //   if (this.status === 200) {
+    //     // this function will soon be written
+    //     printElements(response, city);
+    //   }
+    // });
+
+    // request.open("GET", url, true);
+    // request.send();
+
+    // utilizing Fetch API
+    try {
+      let response = await fetch(
+        `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.API_KEY}`
+      );
+      let jsonifiedResponse = await response.json();
+      return jsonifiedResponse;
+    } catch (error) {
+      console.error("There was an issue in handling your requests: " + error.message);
+    }
   }
 }
