@@ -1,3 +1,5 @@
+// UI LOGIC //
+
 // import $ from 'jQuery';
 // import 'bootstrap';
 // import 'bootstrap/dist/css/bootstrap.min.css';
