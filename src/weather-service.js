@@ -1,5 +1,6 @@
-// export class WeatherService {
-//   getWeatherByCity() {
-//       return "Hello World"
-//   }
-// }
+export class WeatherService {
+  
+  getWeatherByCity() {
+      let request = new XMLHttpRequest();
+  }
+}
