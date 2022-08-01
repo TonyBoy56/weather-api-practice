@@ -1,30 +1,105 @@
-// UI LOGIC //
 import $ from "jquery";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./styles.css";
-import { WeatherService } from "./../src/weather-service.js";
+import "./css/styles.css";
+// import { WeatherService } from "./weather-service";
 
-// jQuery DOM logic against weather-service API request
+function getWeatherByCity(city) {
+  ///////////////////////////////////////////utilizing XMLHttpRequest method////////////////////////////////////////
 
-$(document).ready(function () {
-  $("#weatherLocation").click(function () {
-    const city = $("#location").val("");
+  let request = new XMLHttpRequest();
+  const url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.API_KEY}`;
 
-    (async () => {
-      let weatherService = new WeatherService();
-      const response = await weatherService.getWeatherByCity(city);
-      getElements(response);
-    })();
-
-    function getElements(response) {
-      $(".showHumdidity").text(
-        `The humidity in ${city} is ${response.main.humidity}%.`
-      );
-      $(".showTemp").text(
-        `The temperature in ${city} is ${response.main.temp} degrees.`);
+  request.addEventListener("loadend", function () {
+    const response = JSON.parse(this.responseText);
+    if (this.status === 200) {
+      printElements(response, city);
+    } else {
+      printError(this, response, city)
     }
   });
-});
 
-// jQuery AJAX API request and DOM logic
+  request.open("GET", url, true);
+  request.send();
+}
+
+function printElements(apiResponse, city) {
+  document.querySelector(
+    ".showHumidity"
+  ).innerText = `The humidity in ${city} is ${apiResponse.main.humidity}%.`;
+  document.querySelector(
+    ".showTemp"
+  ).innerText = `The temperature in Kelvins ${city} is ${apiResponse.main.temp} degrees`;
+}
+
+function printError(request, apiResponse, city) {
+  document.querySelector('#showResponse').text = `There was an error in handling your request for ${city}: ${request.status} ${request.statusText}: ${apiResponse.message}`;
+}
+
+function handleFormSubmission() {
+  event.preventDefault();
+  const city = document.querySelector('#location').value;
+  document.querySelector('#location').value = null;
+  getWeatherByCity(city);
+}
+
+window.addEventListener("load", function() {
+  document.querySelector('form').addEventListener("submit", handleFormSubmission);
+})
+
+// $(document).ready(function () {
+//   $("#weatherLocation").click(function () {
+//     const city = $("#location").val("");
+
+//     (async () => {
+//       const response = await getWeatherByCity(city);
+//       getElements(response);
+//     })();
+
+//     function getElements(response) {
+//       $(".showHumdidity").text(
+//         `The humidity in ${city} is ${response.main.humidity}%.`
+//       );
+//       $(".showTemp").text(
+//         `The temperature in ${city} is ${response.main.temp} degrees.`
+//       );
+//     }
+//   });
+// });
+
+///////////////////////////////////////////utilizing jQuery AJAX method/////////////////////////////////////////////
+
+// $(document).ready(function () {
+//   $("#weatherLocation").click(function () {
+//     const city = $("#location").val("");
+//     $.ajax({
+//       type: "GET",
+//       url: `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.API_KEY}`,
+//       dataType: "json",
+//       success: getElements(),
+//       error: error(),
+//     });
+
+//     function getElements(response) {
+//       $(".showHumdidity").text(
+//         `The humidity in ${city} is ${response.main.humidity}%.`
+//       );
+//       $(".showTemp").text(
+//         `The temperature in ${city} is ${response.main.temp} degrees.`
+//       );
+//     }
+
+//     function error(xhr, status, error) {
+//       alert(
+//         "Result: " +
+//           status +
+//           " " +
+//           error +
+//           " " +
+//           xhr.status +
+//           " " +
+//           xhr.statusText
+//       );
+//     }
+//   });
+// });
