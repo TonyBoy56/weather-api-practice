@@ -2,16 +2,34 @@ import $ from "jquery";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./css/styles.css";
-// import { WeatherService } from "./weather-service";
+
+/////////////////////////////////////////utilizing jQuery AJAX method/////////////////////////////////////////////
 
 $(document).ready(function () {
-  $("#hidden").hover(function () {
-    $(this).css("color", "black");
-  },
-  );
+  $("#weatherLocation").click(function () {
+    event.preventDefault();
+    const city = $("#location").val();
+    $.ajax({
+      type: "GET",
+      url: `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.API_KEY}`,
+      dataType: "json",
+      success: function (result, status, xhr) {
+        $(".showHumidity").text(
+          `The humidity in ${city} is ${result.main.humidity}%.`
+        );
+        $(".showTemp").text(
+          `The temperature in, in Kelvins, within ${city} is ${result.main.temp} degrees.`
+        );
+      },
+      // error: alert("nope"),
+    });
+
+    const returnSuccess = () => {};
+  });
 });
-// function getWeatherByCity(city) {
+
 //   ///////////////////////////////////////////utilizing XMLHttpRequest method////////////////////////////////////////
+// function getWeatherByCity(city) {
 
 //   let request = new XMLHttpRequest();
 //   const url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.API_KEY}`;
@@ -71,43 +89,6 @@ $(document).ready(function () {
 //       return response;
 //       // $(".showHumdidity").innerText = `The humidity in ${city} is ${response.main.humidity}%.`;
 //       // $(".showTemp").innerText = `The temperature in Kelvin in ${city} is ${response.main.temp} degrees.`;
-//     }
-//   });
-// });
-
-///////////////////////////////////////////utilizing jQuery AJAX method/////////////////////////////////////////////
-
-// $(document).ready(function () {
-//   $("#weatherLocation").click(function () {
-//     const city = $("#location").val("");
-//     $.ajax({
-//       type: "GET",
-//       url: `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.API_KEY}`,
-//       dataType: "json",
-//       success: getElements(),
-//       error: error(),
-//     });
-
-//     function getElements(response) {
-//       $(".showHumdidity").text(
-//         `The humidity in ${city} is ${response.main.humidity}%.`
-//       );
-//       $(".showTemp").text(
-//         `The temperature in ${city} is ${response.main.temp} degrees.`
-//       );
-//     }
-
-//     function error(xhr, status, error) {
-//       alert(
-//         "Result: " +
-//           status +
-//           " " +
-//           error +
-//           " " +
-//           xhr.status +
-//           " " +
-//           xhr.statusText
-//       );
 //     }
 //   });
 // });
