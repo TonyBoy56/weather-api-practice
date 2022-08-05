@@ -6,29 +6,40 @@ import "./css/styles.css";
 /////////////////////////////////////////utilizing jQuery AJAX method/////////////////////////////////////////////
 
 $(document).ready(function () {
+  // perform an ajax request on click-event of a button with id #weatherLocation
   $("#weatherLocation").click(function () {
     event.preventDefault();
     const city = $("#location").val();
+    // the ajax request. call 'returnSuccess' if status == 200; call returnError if status == 400
     $.ajax({
       type: "GET",
       url: `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.API_KEY}`,
       dataType: "json",
-      success: function (result, status, xhr) {
-        $(".showHumidity").text(
-          `The humidity in ${city} is ${result.main.humidity}%.`
-        );
-        $(".showTemp").text(
-          `The temperature in, in Kelvins, within ${city} is ${result.main.temp} degrees.`
-        );
+      success: function (result) {
+        returnSuccess(result, city);
       },
-      // error: alert("nope"),
+      error: function (xhr, status, error) {
+        returnError(xhr, status, error);
+      }
     });
-
-    const returnSuccess = () => {};
   });
 });
 
-//   ///////////////////////////////////////////utilizing XMLHttpRequest method////////////////////////////////////////
+const returnSuccess = (result, city) => {
+  $(".showHumidity").text(
+    `The humidity in ${city} is ${result.main.humidity}%.`
+  );
+  $(".showTemp").text(
+    `The temperature in, in Kelvins, within ${city} is ${result.main.temp} degrees.`
+  );
+};
+
+const returnError = (xhr, status, error) => {
+  $("#showResponse").text(
+    `Result: ${status} ${error} ${xhr.status}`
+  );
+};
+///////////////////////////////// Exemplify  an understanding of utilizing XMLHttpRequest method \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 // function getWeatherByCity(city) {
 
 //   let request = new XMLHttpRequest();
@@ -69,26 +80,4 @@ $(document).ready(function () {
 
 // window.addEventListener("load", function() {
 //   document.querySelector('form').addEventListener("submit", handleFormSubmission);
-// });
-
-/////////////////////////////////////////utilizing Fetch API method/////////////////////////////////////////////
-
-// $(document).ready(function () {
-//   event.preventDefault();
-//   $("#weatherLocation").click(function () {
-//     getWeatherByCity(city);
-//     const city = $("#location").val();
-//     $('#location').val("");
-
-//     (async () => {
-//       const response = await getWeatherByCity(city);
-//       getElements(response);
-//     })();
-
-//     function getElements(response) {
-//       return response;
-//       // $(".showHumdidity").innerText = `The humidity in ${city} is ${response.main.humidity}%.`;
-//       // $(".showTemp").innerText = `The temperature in Kelvin in ${city} is ${response.main.temp} degrees.`;
-//     }
-//   });
 // });
