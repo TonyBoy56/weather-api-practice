@@ -35,7 +35,7 @@ const returnSuccess = (result, city) => {
 };
 
 const returnError = (xhr, status, error) => {
-  $("#showResponse").text(
+  $(".errors").text(
     `Result: ${status} ${error} ${xhr.status}`
   );
 };
