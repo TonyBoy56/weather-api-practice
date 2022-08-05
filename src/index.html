@@ -11,26 +11,30 @@
   </head>
   <body>
     <div class="container">
-      <h1>Get Weather Conditions From Anywhere!</h1>
+      <h1 id="header">Weather App</h1>
       <p>
         To get the current weather conditions for a location, please enter the
         city name or the city and state separated by a comma. Here are three
         examples:
       </p>
-      <pre>
+      <p>
         Portland
         Atlanta, Georgia
         cairo
-      </pre>
+      </p>
       <form>
-        <label for="location">Enter a location:</label>
-        <input id="location" type="text"/>
+        <div class="search">
+          <input id="location" placeholder="Search by city, state, or country" type="text"/>
+        </div>
+        
         <button type="submit" class="btn-success" id="weatherLocation">
           Get Current Temperature and Humidity
         </button>
-        <div class="errors"></div>
-        <div class="showHumidity"></div>
-        <div class="showTemp"></div>
+        <div class="result">
+          <div class="errors"></div>
+          <div class="showHumidity"></div>
+          <div class="showTemp"></div>
+        </div>
       </form>
       <p id="showResponse"></p>
     </div>
