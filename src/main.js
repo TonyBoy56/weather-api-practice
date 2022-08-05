@@ -39,6 +39,7 @@ const returnError = (xhr, status, error) => {
     `Result: ${status} ${error} ${xhr.status}`
   );
 };
+
 ///////////////////////////////// Exemplify  an understanding of utilizing XMLHttpRequest method \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 // function getWeatherByCity(city) {
 
